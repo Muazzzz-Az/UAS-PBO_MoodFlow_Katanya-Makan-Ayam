@@ -1,0 +1,61 @@
+/* style.css - untuk tampilan aesthetic */
+
+.root {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Button Hover Effects */
+.button {
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s ease;
+}
+
+.button:hover {
+    -fx-opacity: 0.85;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+/* TextField & TextArea styling */
+.text-field, .password-field, .text-area, .combo-box, .date-picker {
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #E0E0E0;
+    -fx-padding: 10;
+}
+
+.text-field:focused, .password-field:focused, .text-area:focused {
+    -fx-border-color: #6C63FF;
+    -fx-border-width: 2;
+}
+
+/* ListView styling */
+.list-view {
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+}
+
+.list-cell {
+    -fx-padding: 12;
+    -fx-border-color: transparent transparent #E0E0E0 transparent;
+}
+
+.list-cell:selected {
+    -fx-background-color: #6C63FF20;
+}
+
+/* Scrollbar styling */
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #6C63FF;
+    -fx-background-radius: 10;
+}
+
+/* Card animations */
+VBox, HBox {
+    -fx-transition: all 0.2s ease;
+}
+
+VBox:hover {
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}

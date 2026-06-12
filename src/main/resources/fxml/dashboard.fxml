@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane prefHeight="700.0" prefWidth="1200.0"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1">
+
+    <!-- TOP BAR -->
+    <top>
+        <HBox style="-fx-background-color: #6C63FF; -fx-padding: 15;" spacing="20" alignment="CENTER_LEFT">
+            <Label text="🌊 MoodFlow" style="-fx-text-fill: white; -fx-font-size: 24; -fx-font-weight: bold;" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Label fx:id="userLabel" text="Hello, User!" style="-fx-text-fill: white;" />
+            <Button fx:id="logoutButton" text="Logout" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-border-color: white; -fx-border-radius: 5;" />
+        </HBox>
+    </top>
+
+    <!-- LEFT MENU -->
+    <left>
+        <VBox style="-fx-background-color: #F5F5F5; -fx-padding: 20;" spacing="15" prefWidth="200">
+            <Button fx:id="dashboardBtn" text="📊 Dashboard" style="-fx-background-color: #6C63FF; -fx-text-fill: white;" />
+            <Button fx:id="tasksBtn" text="✅ My Tasks" style="-fx-background-color: transparent; -fx-text-fill: #333;" />
+            <Button fx:id="moodBtn" text="😊 Mood Tracker" style="-fx-background-color: transparent; -fx-text-fill: #333;" />
+            <Button fx:id="reportBtn" text="📈 Report" style="-fx-background-color: transparent; -fx-text-fill: #333;" />
+        </VBox>
+    </left>
+
+    <!-- CENTER CONTENT (akan berubah sesuai menu) -->
+    <center>
+        <StackPane fx:id="contentArea" style="-fx-padding: 20;">
+            <!-- Welcome Card -->
+            <VBox alignment="CENTER" spacing="20">
+                <Label text="✨ Welcome to MoodFlow ✨" style="-fx-font-size: 32; -fx-font-weight: bold; -fx-text-fill: #6C63FF;" />
+                <Label text="Track your tasks and mood for better productivity!" style="-fx-font-size: 16; -fx-text-fill: #666;" />
+
+                <!-- Statistics Cards -->
+                <HBox spacing="20" alignment="CENTER">
+                    <VBox style="-fx-background-color: #E8F5E9; -fx-padding: 20; -fx-border-radius: 15; -fx-background-radius: 15;" alignment="CENTER">
+                        <Label text="📋" style="-fx-font-size: 32;" />
+                        <Label fx:id="totalTasksLabel" text="0" style="-fx-font-size: 24; -fx-font-weight: bold;" />
+                        <Label text="Total Tasks" />
+                    </VBox>
+
+                    <VBox style="-fx-background-color: #E3F2FD; -fx-padding: 20; -fx-border-radius: 15; -fx-background-radius: 15;" alignment="CENTER">
+                        <Label text="✅" style="-fx-font-size: 32;" />
+                        <Label fx:id="completedTasksLabel" text="0" style="-fx-font-size: 24; -fx-font-weight: bold;" />
+                        <Label text="Completed" />
+                    </VBox>
+
+                    <VBox style="-fx-background-color: #FFF3E0; -fx-padding: 20; -fx-border-radius: 15; -fx-background-radius: 15;" alignment="CENTER">
+                        <Label text="😊" style="-fx-font-size: 32;" />
+                        <Label fx:id="avgMoodLabel" text="0" style="-fx-font-size: 24; -fx-font-weight: bold;" />
+                        <Label text="Avg Mood" />
+                    </VBox>
+                </HBox>
+            </VBox>
+        </StackPane>
+    </center>
+</BorderPane>

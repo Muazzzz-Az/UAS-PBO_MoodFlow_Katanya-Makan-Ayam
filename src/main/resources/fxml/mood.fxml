@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="20" xmlns="http://javafx.com/javafx/25"
+      xmlns:fx="http://javafx.com/fxml/1">
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20" />
+    </padding>
+
+    <children>
+        <Label text="😊 How are you feeling today?" style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: #6C63FF;" />
+
+        <!-- Mood Selection Grid -->
+        <GridPane hgap="20" vgap="20" alignment="CENTER">
+            <children>
+                <!-- Mood Buttons -->
+                <VBox fx:id="moodExcellent" style="-fx-background-color: #E8F5E9; -fx-padding: 15; -fx-background-radius: 15;"
+                      alignment="CENTER" onMouseClicked="#onMoodClicked">
+                    <Label text="😁" style="-fx-font-size: 40;" />
+                    <Label text="Excellent" />
+                </VBox>
+
+                <VBox fx:id="moodGood" style="-fx-background-color: #E3F2FD; -fx-padding: 15; -fx-background-radius: 15;"
+                      alignment="CENTER" onMouseClicked="#onMoodClicked">
+                    <Label text="🙂" style="-fx-font-size: 40;" />
+                    <Label text="Good" />
+                </VBox>
+
+                <VBox fx:id="moodNeutral" style="-fx-background-color: #FFF3E0; -fx-padding: 15; -fx-background-radius: 15;"
+                      alignment="CENTER" onMouseClicked="#onMoodClicked">
+                    <Label text="😐" style="-fx-font-size: 40;" />
+                    <Label text="Neutral" />
+                </VBox>
+
+                <VBox fx:id="moodBad" style="-fx-background-color: #FFEBEE; -fx-padding: 15; -fx-background-radius: 15;"
+                      alignment="CENTER" onMouseClicked="#onMoodClicked">
+                    <Label text="😔" style="-fx-font-size: 40;" />
+                    <Label text="Bad" />
+                </VBox>
+
+                <VBox fx:id="moodTerrible" style="-fx-background-color: #FCE4EC; -fx-padding: 15; -fx-background-radius: 15;"
+                      alignment="CENTER" onMouseClicked="#onMoodClicked">
+                    <Label text="😫" style="-fx-font-size: 40;" />
+                    <Label text="Terrible" />
+                </VBox>
+            </children>
+        </GridPane>
+
+        <!-- Notes -->
+        <TextArea fx:id="moodNotes" promptText="Any notes about your mood today?" prefHeight="100" />
+        <Button fx:id="saveMoodBtn" text="Save Mood" style="-fx-background-color: #6C63FF; -fx-text-fill: white; -fx-background-radius: 20;" />
+
+        <Separator />
+
+        <!-- Mood History -->
+        <Label text="📅 Mood History" style="-fx-font-size: 18; -fx-font-weight: bold;" />
+        <ListView fx:id="moodHistoryList" prefHeight="300" />
+    </children>
+</VBox>
