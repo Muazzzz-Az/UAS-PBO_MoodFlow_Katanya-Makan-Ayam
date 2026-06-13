@@ -1,65 +1,66 @@
-
-
 package com.kelompok.moodflow.controller;
 
+import com.kelompok.moodflow.service.UserService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.springframework.http.*;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.stereotype.Controller;
 
+@Controller
 public class LoginController {
 
-    @FXML private TextField emailField;
+    @FXML private TextField emailField; // Menggunakan emailField sesuai id di FXML kamu
     @FXML private PasswordField passwordField;
     @FXML private Button loginButton;
-    @FXML private Hyperlink registerLink;
 
-    private RestTemplate restTemplate = new RestTemplate();
-    private static final String API_URL = "http://localhost:8080/api/auth/login";
+    private final UserService userService;
+    private final ConfigurableApplicationContext springContext;
+
+    @Autowired
+    public LoginController(UserService userService, ConfigurableApplicationContext springContext) {
+        this.userService = userService;
+        this.springContext = springContext;
+    }
 
     @FXML
     public void initialize() {
+        // Memastikan tombol login merespons saat diklik
         loginButton.setOnAction(e -> handleLogin());
-        registerLink.setOnAction(e -> openRegisterPage());
     }
 
     private void handleLogin() {
-        String email = emailField.getText();
+        // Mengambil input dari pengguna
+        String username = emailField.getText();
         String password = passwordField.getText();
 
-        if (email.isEmpty() || password.isEmpty()) {
-            showAlert("Error", "Please fill all fields!");
+        if (username.isEmpty() || password.isEmpty()) {
+            showErrorAlert("Validasi Gagal", "Pastikan semua kolom telah diisi!");
             return;
         }
 
-        // Call REST API
-        LoginRequest request = new LoginRequest(email, password);
-
-        try {
-            ResponseEntity<LoginResponse> response = restTemplate.postForEntity(
-                    API_URL, request, LoginResponse.class
-            );
-
-            if (response.getStatusCode() == HttpStatus.OK) {
-                // Save token
-                SessionManager.getInstance().setToken(response.getBody().getToken());
-                SessionManager.getInstance().setUserId(response.getBody().getUserId());
-
-                // Open dashboard
-                openDashboard();
-            }
-        } catch (Exception e) {
-            showAlert("Login Failed", "Invalid email or password!");
+        // Mengecek ke database melalui UserService
+        if (userService.authenticate(username, password)) {
+            showInfoAlert("Login Berhasil", "Selamat datang kembali!");
+            openDashboard();
+        } else {
+            showErrorAlert("Login Gagal", "Username atau Password salah.");
         }
     }
 
     private void openDashboard() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/dashboard.fxml"));
+            // Penting: Biarkan Spring yang membuat controller untuk Dashboard
+            loader.setControllerFactory(springContext::getBean);
+
             Parent root = loader.load();
             Stage stage = (Stage) loginButton.getScene().getWindow();
             stage.setScene(new Scene(root));
@@ -67,25 +68,23 @@ public class LoginController {
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
+            showErrorAlert("Error System", "Gagal memuat halaman dashboard.");
         }
     }
 
-    private void openRegisterPage() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/register.fxml"));
-            Parent root = loader.load();
-            Stage stage = (Stage) registerLink.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private void showInfoAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 
-    private void showAlert(String title, String message) {
+    private void showErrorAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
-        alert.setContentText(message);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
         alert.showAndWait();
     }
 }
