@@ -72,7 +72,7 @@ Proyek ini sepenuhnya menerapkan prinsip dasar PBO demi menciptakan kode yang be
 5. **Mengakses Database (H2 Console)**
    Saat aplikasi sedang berjalan aktif, Anda dapat memantau isi data tabel database secara langsung melalui web browser dengan mengakses detail berikut:
      * **URL Akses:** `http://localhost:8080/h2-console`
-     * **JDBC URL:** `jdbc:h2:mem:moodflowdb`
+     * **JDBC URL:** `jdbc:h2:file:./data/moodflowdb`
      * **Username:** `sa` *(Password silakan dikosongkan)*
 
 ---
@@ -80,4 +80,4 @@ Proyek ini sepenuhnya menerapkan prinsip dasar PBO demi menciptakan kode yang be
 ## 📺 Link Video Presentasi (YouTube)
 
 Tonton demonstrasi lengkap aplikasi, penjelasan alur program (*workflow*), serta pembedahan kode PBO kelompok kami pada tautan berikut:
-👉 **[]**
+👉 **[https://youtu.be/_sv5OjX6uwU?si=-VXlV3R3ID-5ePqd]**
