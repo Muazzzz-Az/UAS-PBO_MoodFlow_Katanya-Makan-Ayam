@@ -3,7 +3,6 @@ package com.kelompok.moodflow.controller;
 import com.kelompok.moodflow.model.MoodEntry;
 import com.kelompok.moodflow.model.User;
 import com.kelompok.moodflow.repository.MoodRepository;
-import com.kelompok.moodflow.repository.UserRepository;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -32,13 +31,13 @@ public class MoodController {
 
     private String selectedMood = null;
     private final MoodRepository moodRepository;
-    private final UserRepository userRepository; // Ditambahkan untuk mendukung relasi User
+    private final SessionManager sessionManager; // Menggunakan SessionManager asli kelompokmu
     private final ObservableList<String> moodItems = FXCollections.observableArrayList();
 
     @Autowired
-    public MoodController(MoodRepository moodRepository, UserRepository userRepository) {
+    public MoodController(MoodRepository moodRepository, SessionManager sessionManager) {
         this.moodRepository = moodRepository;
-        this.userRepository = userRepository;
+        this.sessionManager = sessionManager;
     }
 
     @FXML
@@ -77,13 +76,17 @@ public class MoodController {
             return;
         }
 
+        // Mengambil data user yang sedang login aktif dari SessionManager kelompok
+        User currentUser = sessionManager.getCurrentUser();
+        if (currentUser == null) {
+            showAlert(Alert.AlertType.ERROR, "Error Session", "Gagal mendeteksi user yang sedang aktif.");
+            return;
+        }
+
         MoodEntry entry = new MoodEntry();
         entry.setMoodType(selectedMood);
         entry.setNotes(moodNotes.getText());
-
-        // Mengambil user pertama (admin) dari database agar tidak melanggar relasi database
-        User defaultUser = userRepository.findAll().stream().findFirst().orElse(null);
-        entry.setUser(defaultUser);
+        entry.setUser(currentUser);
 
         moodRepository.save(entry); // Simpan ke H2
 
@@ -98,13 +101,13 @@ public class MoodController {
     private void loadMoodHistory() {
         moodItems.clear();
 
-        // Mengambil data user aktif
-        User defaultUser = userRepository.findAll().stream().findFirst().orElse(null);
+        // Mengambil data user aktif dari SessionManager kelompok
+        User currentUser = sessionManager.getCurrentUser();
         List<MoodEntry> entries;
 
         // Menggunakan query urutan milik MoodRepository kamu
-        if (defaultUser != null) {
-            entries = moodRepository.findByUserIdOrderByTimestampDesc(defaultUser.getId());
+        if (currentUser != null) {
+            entries = moodRepository.findByUserIdOrderByTimestampDesc(currentUser.getId());
         } else {
             entries = moodRepository.findAll();
         }
